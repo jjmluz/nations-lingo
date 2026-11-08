@@ -1,5 +1,6 @@
 package com.jjmluz.nationslingo
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.WindowManager
@@ -24,6 +25,9 @@ class MainActivity : ComponentActivity() {
 
     // Keys are handled here rather than through Compose focus: nothing on screen is focusable.
     // Holding a key only counts as one press, and a used key's release is swallowed with it.
+    // Lint wrongly flags this override as restricted: androidx marks its own override of this public
+    // Activity method as library-internal.
+    @SuppressLint("RestrictedApi")
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         val keyCode = event.keyCode
         when (event.action) {

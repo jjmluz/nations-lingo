@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Lingo das Nações</string>
     <string name="mode_guess_flag">Adivinha a Bandeira</string>
     <string name="mode_guess_flag_hint">Vê o país e escolhe a bandeira</string>
@@ -19,7 +19,8 @@
         <item quantity="many">Recorde: %d países</item>
         <item quantity="other">Recorde: %d países</item>
     </plurals>
-    <plurals name="countries_guessed">
+    <!-- No number in the text: the game-over screen shows it in large type just above. -->
+    <plurals name="countries_guessed" tools:ignore="ImpliedQuantity">
         <item quantity="one">país adivinhado</item>
         <item quantity="many">países adivinhados</item>
         <item quantity="other">países adivinhados</item>

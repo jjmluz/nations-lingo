@@ -68,18 +68,25 @@ The game follows your TV's language:
 
 ## Install it on your TV
 
-Nations Lingo isn't in the Play Store, so you install it from a computer with
-[adb](https://developer.android.com/tools/adb):
+Nations Lingo isn't in the Play Store. Download the APK from the
+[latest release](https://github.com/jjmluz/nations-lingo/releases/latest) and sideload it onto any Android TV
+or Google TV running Android 8 or later. Newer releases install over older ones and keep your best scores.
 
-1. On the TV, turn on developer options and USB or network debugging.
-2. Connect to the TV with `adb connect <the TV's IP address>`.
-3. Build the app (see below) and install it:
+There are two common ways to sideload:
 
-```bash
-adb install -r app/build/outputs/apk/release/app-release.apk
-```
+- **From the TV:** install a file manager or downloader app on the TV, open the APK with it, and allow it to
+  install unknown apps when asked.
+- **From a computer with `adb`:** turn on
+  [developer options and USB or network debugging](https://developer.android.com/studio/debug/dev-options)
+  on the TV, install the [Android SDK platform tools](https://developer.android.com/tools/releases/platform-tools),
+  and run:
 
-It then shows up with your other apps on the TV's home screen.
+  ```bash
+  adb connect <tv-ip-address>:5555
+  adb install -r nations-lingo-<version>.apk
+  ```
+
+The game then shows up with your other apps on the TV's home screen.
 
 ## For developers
 
@@ -88,11 +95,27 @@ Android SDK; `local.properties` holds the SDK path.
 
 ```bash
 export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
-./gradlew testDebugUnitTest assembleRelease
+./gradlew lintDebug testDebugUnitTest assembleRelease
+adb install -r app/build/outputs/apk/release/app-release.apk
 ```
 
-The release build is minified and signed with the debug key. If several devices are connected, pick one
-with `ANDROID_SERIAL` (see `adb devices`).
+A release build you make yourself is signed with your own debug key, so it can't update a copy installed
+from GitHub (or the other way round). Uninstall one before installing the other. If several devices are
+connected, pick one with `ANDROID_SERIAL` (see `adb devices`).
+
+### CI and releases
+
+GitHub Actions (`.github/workflows/ci.yml`) runs lint, the unit tests and a release build on every push to
+`main` and every pull request. To publish a release, push a tag:
+
+```bash
+git tag v1.5.0
+git push origin v1.5.0
+```
+
+CI then builds `nations-lingo-1.5.0.apk`, signs it with the release key, and attaches it to a new GitHub
+release with generated notes. The version name comes from the tag and the version code from the CI run
+number.
 
 ### Where things are
 
@@ -117,3 +140,8 @@ The sound effects are synthesized by `tools/generate_sounds.py` into `res/raw`.
 
 The pictures in this README are in `docs/screenshots`, taken on the `GoogleTV_34` emulator at 1080p and
 scaled to 1280 pixels wide.
+
+## License
+
+Nations Lingo is released under the [MIT License](LICENSE). The flags come from
+[flag-icons](https://github.com/lipis/flag-icons), also under the MIT License.

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Lingue des Nations</string>
     <string name="mode_guess_flag">Devine le drapeau</string>
     <string name="mode_guess_flag_hint">Vois le pays, choisis le drapeau</string>
@@ -19,7 +19,8 @@
         <item quantity="many">Record : %d pays</item>
         <item quantity="other">Record : %d pays</item>
     </plurals>
-    <plurals name="countries_guessed">
+    <!-- No number in the text: the game-over screen shows it in large type just above. -->
+    <plurals name="countries_guessed" tools:ignore="ImpliedQuantity">
         <item quantity="one">pays trouvé</item>
         <item quantity="many">pays trouvés</item>
         <item quantity="other">pays trouvés</item>
