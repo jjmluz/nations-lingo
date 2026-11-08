@@ -16,9 +16,9 @@ const LOOKALIKE_THRESHOLD = 26;
 const root = path.join(__dirname, '..');
 const svgDir = path.join(path.dirname(require.resolve('flag-icons/package.json')), 'flags/4x3');
 const outDir = path.join(root, 'app/src/main/res/drawable-nodpi');
-const source = fs.readFileSync(path.join(root, 'app/src/main/kotlin/com/jjmluz/bandeiras/Countries.kt'), 'utf8');
-const countries = [...source.matchAll(/Country\("([^"]+)", R\.drawable\.flag_([a-z]{2})\)/g)]
-  .map(([, name, code]) => ({ name, code }));
+const source = fs.readFileSync(path.join(root, 'app/src/main/kotlin/com/jjmluz/nationslingo/Countries.kt'), 'utf8');
+const countries = [...source.matchAll(/Country\("([a-z]{2})", R\.drawable\.flag_\1,/g)]
+  .map(([, code]) => ({ name: code, code }));
 
 (async () => {
   const pixels = [];

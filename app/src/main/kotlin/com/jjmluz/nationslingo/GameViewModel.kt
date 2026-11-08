@@ -1,4 +1,4 @@
-package com.jjmluz.bandeiras
+package com.jjmluz.nationslingo
 
 import android.app.Application
 import android.content.Context
@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.annotation.StringRes
 import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import kotlin.random.Random
@@ -19,16 +20,16 @@ private const val RIGHT_ANSWER_MILLIS = 400L
 
 enum class Screen { START, PLAYING, PAUSED, OVER }
 
-enum class Mode(val title: String, val hint: String, val bestKey: String) {
-    GUESS_FLAG("Adivinha a Bandeira", "Vê o país e escolhe a bandeira", "best"),
-    GUESS_COUNTRY("Adivinha o País", "Vê a bandeira e escolhe o país", "best_country"),
+enum class Mode(@param:StringRes val title: Int, @param:StringRes val hint: Int, val bestKey: String) {
+    GUESS_FLAG(R.string.mode_guess_flag, R.string.mode_guess_flag_hint, "best"),
+    GUESS_COUNTRY(R.string.mode_guess_country, R.string.mode_guess_country_hint, "best_country"),
 }
 
 /** The last time bonus or penalty, new on each answer so the UI can replay its animation. */
 class TimeChange(val correct: Boolean)
 
 class GameViewModel(app: Application) : AndroidViewModel(app) {
-    private val prefs = app.getSharedPreferences("bandeiras", Context.MODE_PRIVATE)
+    private val prefs = app.getSharedPreferences("nations_lingo", Context.MODE_PRIVATE)
     private val sounds = Sounds(app)
     private val bests = mutableStateMapOf<Mode, Int>().apply {
         Mode.entries.forEach { put(it, prefs.getInt(it.bestKey, 0)) }
@@ -104,9 +105,9 @@ class GameViewModel(app: Application) : AndroidViewModel(app) {
 
     private fun chooseMode(direction: Direction): Boolean {
         val chosen = when (direction) {
-            Direction.LEFT -> Mode.GUESS_FLAG
-            Direction.RIGHT -> Mode.GUESS_COUNTRY
-            Direction.UP, Direction.DOWN -> return false
+            // The menu is a column, but left and right work too.
+            Direction.UP, Direction.LEFT -> Mode.GUESS_FLAG
+            Direction.DOWN, Direction.RIGHT -> Mode.GUESS_COUNTRY
         }
         if (chosen != mode) {
             mode = chosen

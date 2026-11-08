@@ -9,7 +9,7 @@
         android:banner="@drawable/banner"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Bandeiras">
+        android:theme="@style/Theme.NationsLingo">
 
         <activity
             android:name=".MainActivity"

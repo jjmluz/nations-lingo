@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Nationen-Lingo</string>
+    <string name="mode_guess_flag">Errate die Flagge</string>
+    <string name="mode_guess_flag_hint">Land sehen, Flagge wählen</string>
+    <string name="mode_guess_country">Errate das Land</string>
+    <string name="mode_guess_country_hint">Flagge sehen, Land wählen</string>
+    <string name="paused">Pausiert</string>
+    <string name="continue_game">Weiter</string>
+    <string name="quit_to_menu">Zurück zum Menü</string>
+    <string name="guessed_all">Alle erraten!</string>
+    <string name="time_up">Die Zeit ist um!</string>
+    <string name="new_best">Neuer Rekord!</string>
+    <string name="press_ok_to_play_again">Drücke OK für eine neue Runde</string>
+    <string name="press_back_for_menu">Drücke Zurück für das Menü</string>
+    <string name="score">PUNKTE</string>
+    <string name="time">ZEIT</string>
+    <plurals name="best_count">
+        <item quantity="one">Rekord: %d Land</item>
+        <item quantity="other">Rekord: %d Länder</item>
+    </plurals>
+    <plurals name="countries_guessed">
+        <item quantity="one">Land erraten</item>
+        <item quantity="other">Länder erraten</item>
+    </plurals>
+</resources>

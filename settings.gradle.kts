@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Bandeiras"
+rootProject.name = "NationsLingo"
 include(":app")

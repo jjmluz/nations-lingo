@@ -1,4 +1,4 @@
-package com.jjmluz.bandeiras
+package com.jjmluz.nationslingo
 
 import kotlin.random.Random
 
@@ -8,8 +8,8 @@ const val PENALTY_MILLIS = 2_000L
 
 // Flags that can't be told apart on screen, so they never appear in the same round.
 internal val LOOKALIKES = setOf(
-    setOf("Chade", "Roménia"),
-    setOf("Indonésia", "Mónaco"),
+    setOf("td", "ro"), // Chad, Romania
+    setOf("id", "mc"), // Indonesia, Monaco
 )
 
 enum class Direction { UP, DOWN, LEFT, RIGHT }
@@ -77,7 +77,7 @@ class Game(
         val picked = mutableListOf(target)
         for (country in countries.shuffled(random)) {
             if (picked.size == Direction.entries.size) break
-            if (picked.none { it == country || setOf(it.name, country.name) in LOOKALIKES }) {
+            if (picked.none { it == country || setOf(it.code, country.code) in LOOKALIKES }) {
                 picked += country
             }
         }

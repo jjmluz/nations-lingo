@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Lingo das Nações</string>
+    <string name="mode_guess_flag">Adivinha a Bandeira</string>
+    <string name="mode_guess_flag_hint">Vê o país e escolhe a bandeira</string>
+    <string name="mode_guess_country">Adivinha o País</string>
+    <string name="mode_guess_country_hint">Vê a bandeira e escolhe o país</string>
+    <string name="paused">Em pausa</string>
+    <string name="continue_game">Continuar</string>
+    <string name="quit_to_menu">Sair para o menu</string>
+    <string name="guessed_all">Acertaste em todos!</string>
+    <string name="time_up">Acabou o tempo!</string>
+    <string name="new_best">Novo recorde!</string>
+    <string name="press_ok_to_play_again">Carrega em OK para jogar outra vez</string>
+    <string name="press_back_for_menu">Carrega em Voltar para ir ao menu</string>
+    <string name="score">PONTOS</string>
+    <string name="time">TEMPO</string>
+    <plurals name="best_count">
+        <item quantity="one">Recorde: %d país</item>
+        <item quantity="many">Recorde: %d países</item>
+        <item quantity="other">Recorde: %d países</item>
+    </plurals>
+    <plurals name="countries_guessed">
+        <item quantity="one">país adivinhado</item>
+        <item quantity="many">países adivinhados</item>
+        <item quantity="other">países adivinhados</item>
+    </plurals>
+</resources>

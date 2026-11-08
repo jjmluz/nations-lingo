@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "com.jjmluz.bandeiras"
+    namespace = "com.jjmluz.nationslingo"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.jjmluz.bandeiras"
+        applicationId = "com.jjmluz.nationslingo"
         minSdk = 26
         targetSdk = 37
-        versionCode = 4
-        versionName = "1.3.0"
+        versionCode = 6
+        versionName = "1.4.0"
     }
 
     buildTypes {

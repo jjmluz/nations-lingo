@@ -1,4 +1,4 @@
-package com.jjmluz.bandeiras
+package com.jjmluz.nationslingo
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -21,6 +21,7 @@ class GameTest {
     @Test
     fun `has every country once, each with its own flag`() {
         assertEquals(197, COUNTRIES.size)
+        assertEquals(197, COUNTRIES.map { it.code }.toSet().size)
         assertEquals(197, COUNTRIES.map { it.name }.toSet().size)
         assertEquals(197, COUNTRIES.map { it.flag }.toSet().size)
     }
@@ -104,9 +105,9 @@ class GameTest {
     }
 
     @Test
-    fun `lookalike pairs in the game use names from the country list`() {
-        val names = COUNTRIES.map { it.name }.toSet()
-        assertTrue(LOOKALIKES.flatten().all { it in names })
+    fun `lookalike pairs in the game use codes from the country list`() {
+        val codes = COUNTRIES.map { it.code }.toSet()
+        assertTrue(LOOKALIKES.flatten().all { it in codes })
     }
 
     @Test
@@ -139,8 +140,8 @@ class GameTest {
         for (seed in 0 until 200) {
             val game = newGame(seed)
             while (game.round != null) {
-                val names = game.round!!.options.values.map { it.name }
-                LOOKALIKES.forEach { pair -> assertFalse(names.containsAll(pair)) }
+                val codes = game.round!!.options.values.map { it.code }
+                LOOKALIKES.forEach { pair -> assertFalse(codes.containsAll(pair)) }
                 game.answer(game.rightDirection(), 0)
             }
         }

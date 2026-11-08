@@ -1,4 +1,4 @@
-package com.jjmluz.bandeiras
+package com.jjmluz.nationslingo
 
 import android.content.Context
 import android.media.AudioAttributes

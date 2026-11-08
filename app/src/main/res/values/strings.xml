@@ -1,3 +1,25 @@
 <resources>
-    <string name="app_name">Bandeiras</string>
+    <string name="app_name">Nations Lingo</string>
+    <string name="mode_guess_flag">Guess the Flag</string>
+    <string name="mode_guess_flag_hint">See the country, pick the flag</string>
+    <string name="mode_guess_country">Guess the Country</string>
+    <string name="mode_guess_country_hint">See the flag, pick the country</string>
+    <string name="paused">Paused</string>
+    <string name="continue_game">Continue</string>
+    <string name="quit_to_menu">Quit to menu</string>
+    <string name="guessed_all">You got them all!</string>
+    <string name="time_up">Time\'s up!</string>
+    <string name="new_best">New record!</string>
+    <string name="press_ok_to_play_again">Press OK to play again</string>
+    <string name="press_back_for_menu">Press Back for the menu</string>
+    <string name="score">SCORE</string>
+    <string name="time">TIME</string>
+    <plurals name="best_count">
+        <item quantity="one">Best: %d country</item>
+        <item quantity="other">Best: %d countries</item>
+    </plurals>
+    <plurals name="countries_guessed">
+        <item quantity="one">country guessed</item>
+        <item quantity="other">countries guessed</item>
+    </plurals>
 </resources>

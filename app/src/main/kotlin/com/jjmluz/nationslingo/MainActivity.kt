@@ -1,4 +1,4 @@
-package com.jjmluz.bandeiras
+package com.jjmluz.nationslingo
 
 import android.os.Bundle
 import android.view.KeyEvent
@@ -14,7 +14,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        setContent { BandeirasApp(viewModel) }
+        setContent { NationsLingoApp(viewModel) }
     }
 
     override fun onPause() {

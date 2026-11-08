@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.Bandeiras" parent="android:Theme.Material.NoActionBar">
+    <style name="Theme.NationsLingo" parent="android:Theme.Material.NoActionBar">
         <item name="android:windowBackground">#0B1220</item>
         <item name="android:windowFullscreen">true</item>
     </style>
