@@ -5,3 +5,7 @@ local.properties
 *.iml
 .kotlin/
 .DS_Store
+
+# Personal agent notes about the local setup
+AGENTS.md
+CLAUDE.md
