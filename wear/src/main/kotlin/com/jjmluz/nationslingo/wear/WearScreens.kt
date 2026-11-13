@@ -53,6 +53,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.wear.compose.material3.onehandedgesture.OneHandedGestureAction
+import androidx.wear.compose.material3.onehandedgesture.oneHandedGesture
+import androidx.wear.compose.material3.onehandedgesture.rememberOneHandedGestureConfiguration
 import com.jjmluz.nationslingo.COUNTRIES
 import com.jjmluz.nationslingo.Country
 import com.jjmluz.nationslingo.Direction
@@ -99,7 +102,7 @@ private fun Modifier.at(dial: Dial, x: Float, y: Float, width: Float, height: Fl
     offset(dial * (x - width / 2), dial * (y - height / 2)).size(dial * width, dial * height)
 
 @Composable
-fun WearApp(viewModel: GameViewModel, crown: Crown) {
+fun WearApp(viewModel: GameViewModel, crown: Crown, onSelect: () -> Unit) {
     val view = LocalView.current
     val screen = viewModel.screen
     // The screen stays on during a game only, to spare the battery.
@@ -107,7 +110,24 @@ fun WearApp(viewModel: GameViewModel, crown: Crown) {
     // Swiping back pauses a game, then goes to the title screen. From there it closes the app.
     BackHandler(enabled = screen != Screen.START) { viewModel.back() }
 
-    BoxWithConstraints(Modifier.fillMaxSize().background(Background), Alignment.Center) {
+    // The watch's one-handed gesture (a double pinch on Pixel Watch) does what a side button does. During a
+    // game it's only offered once the crown has outlined an answer, so it never fires for nothing.
+    val round = viewModel.round
+    val selectLabel = when (screen) {
+        Screen.START -> stringResource(viewModel.mode.title)
+        Screen.PLAYING -> stringResource(R.string.pick_answer)
+            .takeIf { round != null && viewModel.rightAnswer == null && crown.highlighted(round) != null }
+        Screen.PAUSED -> stringResource(R.string.continue_game)
+        Screen.OVER -> stringResource(R.string.play_again)
+    }
+    val gesture = rememberOneHandedGestureConfiguration(OneHandedGestureAction.Primary)
+    val selectGesture = if (selectLabel != null) {
+        Modifier.oneHandedGesture(gesture, selectLabel) { onSelect() }
+    } else {
+        Modifier
+    }
+
+    BoxWithConstraints(Modifier.fillMaxSize().background(Background).then(selectGesture), Alignment.Center) {
         val dial = Dial(minOf(maxWidth, maxHeight), LocalDensity.current.fontScale)
         Box(Modifier.size(dial.side)) {
             when (screen) {

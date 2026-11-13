@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { WearApp(viewModel, crown) }
+        setContent { WearApp(viewModel, crown, onSelect = { select() }) }
     }
 
     override fun onPause() {
@@ -75,8 +75,8 @@ class MainActivity : ComponentActivity() {
         Screen.PAUSED, Screen.OVER -> false
     }
 
-    // Pressing the crown, where the watch lets apps have it, or any other button, picks the highlighted
-    // answer. Holding a button only counts as one press, as on TV.
+    // A side button, where the watch lets apps have one, picks the highlighted answer, as does the
+    // one-handed gesture (see WearApp). Pixel Watches keep both their buttons for the system. Holding a button only counts as one press, as on TV.
     // Lint wrongly flags this override as restricted: androidx marks its own override of this public
     // Activity method as library-internal.
     @SuppressLint("RestrictedApi")

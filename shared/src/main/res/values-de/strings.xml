@@ -14,6 +14,7 @@
     <string name="press_back_for_menu">Drücke Zurück für das Menü</string>
     <string name="play_again">Nochmal spielen</string>
     <string name="menu">Menü</string>
+    <string name="pick_answer">Markierte Antwort wählen</string>
     <string name="score">PUNKTE</string>
     <string name="time">ZEIT</string>
     <plurals name="best_count">
