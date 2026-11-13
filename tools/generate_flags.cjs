@@ -2,7 +2,9 @@
 // and prints the pairs of flags that look almost the same (see LOOKALIKES in Game.kt).
 //
 //   npm install --ignore-scripts --prefix <deps> flag-icons sharp
-//   NODE_PATH=<deps>/node_modules node tools/generate_flags.cjs
+//   NODE_PATH=<deps>/node_modules node tools/generate_flags.cjs [--icons-only]
+//
+// With --icons-only it only makes the launcher icons and the TV banner.
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
@@ -17,11 +19,17 @@ const root = path.join(__dirname, '..');
 const svgDir = path.join(path.dirname(require.resolve('flag-icons/package.json')), 'flags/4x3');
 const outDir = path.join(root, 'shared/src/main/res/drawable-nodpi');
 const tvDir = path.join(root, 'app/src/main/res/drawable-nodpi');
+const watchDir = path.join(root, 'wear/src/main/res/drawable-nodpi');
 const source = fs.readFileSync(path.join(root, 'shared/src/main/kotlin/com/jjmluz/nationslingo/Countries.kt'), 'utf8');
 const countries = [...source.matchAll(/Country\("([a-z]{2})", R\.drawable\.flag_\1,/g)]
   .map(([, code]) => ({ name: code, code }));
 
 (async () => {
+  if (!process.argv.includes('--icons-only')) await renderFlags();
+  await launcherImages();
+})();
+
+async function renderFlags() {
   const pixels = [];
   for (const { code } of countries) {
     const svg = path.join(svgDir, `${code}.svg`);
@@ -48,17 +56,22 @@ const countries = [...source.matchAll(/Country\("([a-z]{2})", R\.drawable\.flag_
   pairs.sort((x, y) => x[0] - y[0]);
   for (const [difference, a, b] of pairs) console.log(difference.toFixed(1).padStart(5), a, '/', b);
 
-  // The banner is for the TV only; the icon is shared with the watch, which crops it to a circle.
-  await launcherImage(320, 180, tvDir, 'banner');
-  await launcherImage(180, 180, outDir, 'icon');
-})();
+}
 
-// Four flags in the game's cross layout, at twice the size the launcher shows them.
-async function launcherImage(width, height, dir, name) {
-  const scale = 2;
-  const flagWidth = 120, flagHeight = 90, gap = 12;
-  const centerX = width * scale / 2;
-  const centerY = height * scale / 2;
+async function launcherImages() {
+  // The TV's banner and icon, at twice the size the launcher shows them.
+  await launcherImage({ width: 640, height: 360, flagWidth: 120, gap: 12, file: path.join(tvDir, 'banner.webp') });
+  await launcherImage({ width: 360, height: 360, flagWidth: 120, gap: 12, file: path.join(outDir, 'icon.webp') });
+  // The watch's adaptive icon foreground: 108dp at 4x, of which the launcher shows the middle 72dp as a
+  // circle on the dark background colour. The flags fill that circle, keeping their corners inside it.
+  await launcherImage({ width: 432, height: 432, flagWidth: 100, gap: 8, file: path.join(watchDir, 'icon_foreground.webp'), transparent: true });
+}
+
+// Four flags in the game's cross layout, on the game's background unless [transparent].
+async function launcherImage({ width, height, flagWidth, gap, file, transparent = false }) {
+  const flagHeight = flagWidth * 3 / 4;
+  const centerX = width / 2;
+  const centerY = height / 2;
   const places = [
     ['pt', 0, -1], ['jp', -1, 0], ['ca', 1, 0], ['br', 0, 1],
   ];
@@ -68,6 +81,6 @@ async function launcherImage(width, height, dir, name) {
     top: Math.round(centerY - flagHeight / 2 + down * (flagHeight + gap)),
   })));
   const background = Buffer.from(
-    `<svg width="${width * scale}" height="${height * scale}"><rect width="100%" height="100%" fill="#0B1220"/></svg>`);
-  await sharp(background).composite(flags).webp({ quality: 92 }).toFile(path.join(dir, `${name}.webp`));
+    `<svg width="${width}" height="${height}"><rect width="100%" height="100%" fill="${transparent ? 'none' : '#0B1220'}"/></svg>`);
+  await sharp(background).composite(flags).webp({ quality: 92 }).toFile(file);
 }
