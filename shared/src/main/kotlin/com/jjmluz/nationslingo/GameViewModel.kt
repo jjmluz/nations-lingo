@@ -3,7 +3,6 @@ package com.jjmluz.nationslingo
 import android.app.Application
 import android.content.Context
 import android.os.SystemClock
-import android.view.KeyEvent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
@@ -12,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.annotation.StringRes
 import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
+import com.jjmluz.nationslingo.shared.R
 import kotlin.random.Random
 
 const val LOW_TIME_SECONDS = 10
@@ -57,20 +57,6 @@ class GameViewModel(app: Application) : AndroidViewModel(app) {
 
     fun best(mode: Mode): Int = bests.getValue(mode)
 
-    /** Returns true when the key was used, so it doesn't also reach the system. */
-    fun onKey(keyCode: Int): Boolean = when (keyCode) {
-        KeyEvent.KEYCODE_DPAD_UP -> answer(Direction.UP)
-        KeyEvent.KEYCODE_DPAD_DOWN -> answer(Direction.DOWN)
-        KeyEvent.KEYCODE_DPAD_LEFT -> answer(Direction.LEFT)
-        KeyEvent.KEYCODE_DPAD_RIGHT -> answer(Direction.RIGHT)
-        KeyEvent.KEYCODE_DPAD_CENTER,
-        KeyEvent.KEYCODE_ENTER,
-        KeyEvent.KEYCODE_NUMPAD_ENTER,
-        KeyEvent.KEYCODE_BUTTON_A -> confirm()
-        KeyEvent.KEYCODE_BACK -> back()
-        else -> false
-    }
-
     fun tick() {
         val current = game ?: return
         if (screen != Screen.PLAYING) return
@@ -103,21 +89,31 @@ class GameViewModel(app: Application) : AndroidViewModel(app) {
 
     override fun onCleared() = sounds.release()
 
-    private fun chooseMode(direction: Direction): Boolean {
-        val chosen = when (direction) {
-            // The menu is a column, but left and right work too.
-            Direction.UP, Direction.LEFT -> Mode.GUESS_FLAG
-            Direction.DOWN, Direction.RIGHT -> Mode.GUESS_COUNTRY
-        }
-        if (chosen != mode) {
+    /** Highlights a game on the title screen. */
+    fun chooseMode(chosen: Mode) {
+        if (screen == Screen.START && chosen != mode) {
             mode = chosen
             sounds.play(Sound.MOVE)
         }
-        return true
     }
 
-    private fun answer(direction: Direction): Boolean {
-        if (screen == Screen.START) return chooseMode(direction)
+    /** Starts a game straight away, as when it's tapped on the title screen. */
+    fun start(chosen: Mode) {
+        if (screen == Screen.START) {
+            mode = chosen
+            start()
+        }
+    }
+
+    /**
+     * Picks the answer in [direction]. On the title screen, up and left choose the first game, down and
+     * right the second. Returns false when it does nothing on this screen.
+     */
+    fun answer(direction: Direction): Boolean {
+        if (screen == Screen.START) {
+            chooseMode(if (direction == Direction.UP || direction == Direction.LEFT) Mode.GUESS_FLAG else Mode.GUESS_COUNTRY)
+            return true
+        }
         val current = game
         if (current == null || screen != Screen.PLAYING) return false
         if (rightAnswer != null) return true
@@ -155,7 +151,8 @@ class GameViewModel(app: Application) : AndroidViewModel(app) {
         if (current.isOver(now)) finish(current) else show(current, now)
     }
 
-    private fun confirm(): Boolean {
+    /** Starts a game from the title or game over screen, or carries on after a pause. */
+    fun confirm(): Boolean {
         when (screen) {
             Screen.START, Screen.OVER -> start()
             Screen.PAUSED -> resume()
@@ -164,7 +161,8 @@ class GameViewModel(app: Application) : AndroidViewModel(app) {
         return true
     }
 
-    private fun back(): Boolean {
+    /** Pauses, or goes back to the title screen. Returns false on the title screen, so the app can close. */
+    fun back(): Boolean {
         when (screen) {
             Screen.START -> return false
             Screen.PLAYING -> pause()

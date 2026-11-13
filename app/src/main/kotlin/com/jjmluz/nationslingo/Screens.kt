@@ -29,7 +29,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
-import androidx.compose.foundation.text.modifiers.TextAutoSizeLayoutScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -59,16 +58,14 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jjmluz.nationslingo.shared.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -610,25 +607,3 @@ private fun Label(
 
 @Composable
 private fun bestLabel(count: Int) = pluralStringResource(R.plurals.best_count, count, count)
-
-/**
- * Picks the largest size, from [max] down to [min], at which the text fits without a word broken across
- * lines. Country names in some languages have long single words, like "Zentralafrikanische".
- */
-private data class WholeWordsAutoSize(val min: TextUnit, val max: TextUnit) : TextAutoSize {
-    override fun TextAutoSizeLayoutScope.getFontSize(constraints: Constraints, text: AnnotatedString): TextUnit {
-        var size = max.value
-        while (size > min.value) {
-            val layout = performLayout(constraints, text, size.sp)
-            if (!layout.hasVisualOverflow && !layout.breaksWord(text)) return size.sp
-            size -= 1
-        }
-        return min
-    }
-
-    private fun TextLayoutResult.breaksWord(text: AnnotatedString): Boolean =
-        (0 until lineCount - 1).any { line ->
-            val end = getLineEnd(line)
-            end in 1 until text.length && text[end - 1].isLetterOrDigit() && text[end].isLetterOrDigit()
-        }
-}

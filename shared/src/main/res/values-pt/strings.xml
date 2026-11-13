@@ -12,6 +12,8 @@
     <string name="new_best">Novo recorde!</string>
     <string name="press_ok_to_play_again">Carrega em OK para jogar outra vez</string>
     <string name="press_back_for_menu">Carrega em Voltar para ir ao menu</string>
+    <string name="play_again">Jogar outra vez</string>
+    <string name="menu">Menu</string>
     <string name="score">PONTOS</string>
     <string name="time">TEMPO</string>
     <plurals name="best_count">

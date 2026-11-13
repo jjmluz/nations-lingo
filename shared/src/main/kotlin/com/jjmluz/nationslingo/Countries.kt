@@ -2,6 +2,7 @@ package com.jjmluz.nationslingo
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.jjmluz.nationslingo.shared.R
 
 /** [code] is the ISO 3166 code; [name] is translated in each language's `countries.xml`. */
 data class Country(val code: String, @param:DrawableRes val flag: Int, @param:StringRes val name: Int)

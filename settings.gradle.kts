@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "NationsLingo"
-include(":app")
+include(":shared", ":app", ":wear")

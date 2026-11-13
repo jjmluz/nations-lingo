@@ -15,8 +15,9 @@ const LOOKALIKE_THRESHOLD = 26;
 
 const root = path.join(__dirname, '..');
 const svgDir = path.join(path.dirname(require.resolve('flag-icons/package.json')), 'flags/4x3');
-const outDir = path.join(root, 'app/src/main/res/drawable-nodpi');
-const source = fs.readFileSync(path.join(root, 'app/src/main/kotlin/com/jjmluz/nationslingo/Countries.kt'), 'utf8');
+const outDir = path.join(root, 'shared/src/main/res/drawable-nodpi');
+const tvDir = path.join(root, 'app/src/main/res/drawable-nodpi');
+const source = fs.readFileSync(path.join(root, 'shared/src/main/kotlin/com/jjmluz/nationslingo/Countries.kt'), 'utf8');
 const countries = [...source.matchAll(/Country\("([a-z]{2})", R\.drawable\.flag_\1,/g)]
   .map(([, code]) => ({ name: code, code }));
 
@@ -47,12 +48,13 @@ const countries = [...source.matchAll(/Country\("([a-z]{2})", R\.drawable\.flag_
   pairs.sort((x, y) => x[0] - y[0]);
   for (const [difference, a, b] of pairs) console.log(difference.toFixed(1).padStart(5), a, '/', b);
 
-  await launcherImage(320, 180, 'banner');
-  await launcherImage(180, 180, 'icon');
+  // The banner is for the TV only; the icon is shared with the watch, which crops it to a circle.
+  await launcherImage(320, 180, tvDir, 'banner');
+  await launcherImage(180, 180, outDir, 'icon');
 })();
 
 // Four flags in the game's cross layout, at twice the size the launcher shows them.
-async function launcherImage(width, height, name) {
+async function launcherImage(width, height, dir, name) {
   const scale = 2;
   const flagWidth = 120, flagHeight = 90, gap = 12;
   const centerX = width * scale / 2;
@@ -67,5 +69,5 @@ async function launcherImage(width, height, name) {
   })));
   const background = Buffer.from(
     `<svg width="${width * scale}" height="${height * scale}"><rect width="100%" height="100%" fill="#0B1220"/></svg>`);
-  await sharp(background).composite(flags).webp({ quality: 92 }).toFile(path.join(outDir, `${name}.webp`));
+  await sharp(background).composite(flags).webp({ quality: 92 }).toFile(path.join(dir, `${name}.webp`));
 }
