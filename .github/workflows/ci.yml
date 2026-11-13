@@ -1,7 +1,7 @@
 name: CI
 
 # Every push and pull request is linted, tested and built.
-# Pushing a tag like v1.2.0 also publishes a GitHub release with the APK.
+# Pushing a tag like v1.2.0 also publishes a GitHub release with the TV and watch APKs.
 on:
   push:
     branches: [main]
@@ -32,10 +32,10 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
 
       - name: Lint
-        run: ./gradlew :app:lintDebug
+        run: ./gradlew lintDebug
 
       - name: Unit tests
-        run: ./gradlew :app:testDebugUnitTest
+        run: ./gradlew testDebugUnitTest
 
       - name: Version
         id: version
@@ -58,16 +58,17 @@ jobs:
             echo "::warning::No signing secrets; the APK is signed with a throwaway debug key."
           fi
 
-      - name: Build release APK
+      - name: Build release APKs
         env:
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
-          ./gradlew :app:assembleRelease \
+          ./gradlew :app:assembleRelease :wear:assembleRelease \
             -PversionCode=${{ github.run_number }} \
             -PversionName=${{ steps.version.outputs.name }}
           cp app/build/outputs/apk/release/app-release.apk "nations-lingo-${{ steps.version.outputs.name }}.apk"
+          cp wear/build/outputs/apk/release/wear-release.apk "nations-lingo-wear-${{ steps.version.outputs.name }}.apk"
 
       - uses: actions/upload-artifact@v7
         with:
@@ -79,7 +80,8 @@ jobs:
         if: failure()
         with:
           name: reports
-          path: app/build/reports/
+          path: |
+            */build/reports/
 
   release:
     name: Publish release

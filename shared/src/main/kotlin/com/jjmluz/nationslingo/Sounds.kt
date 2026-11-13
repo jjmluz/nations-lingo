@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.AudioAttributes
 import android.media.SoundPool
 import androidx.annotation.RawRes
+import com.jjmluz.nationslingo.shared.R
 
 enum class Sound(@param:RawRes val resource: Int) {
     MOVE(R.raw.move),

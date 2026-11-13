@@ -6,7 +6,7 @@ import wave
 from pathlib import Path
 
 RATE = 22050
-OUT_DIR = Path(__file__).resolve().parent.parent / "app/src/main/res/raw"
+OUT_DIR = Path(__file__).resolve().parent.parent / "shared/src/main/res/raw"
 
 
 def note(frequency, seconds, volume=0.6, square=False):
