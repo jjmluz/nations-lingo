@@ -14,7 +14,7 @@ android {
         minSdk = 30
         targetSdk = 37
         // CI passes these for releases (-PversionCode=… -PversionName=…); local builds use the defaults.
-        versionCode = providers.gradleProperty("versionCode").map(String::toInt).getOrElse(6)
+        versionCode = providers.gradleProperty("versionCode").map(String::toInt).getOrElse(7)
         versionName = providers.gradleProperty("versionName").getOrElse("1.4.0")
     }
 
