@@ -53,18 +53,20 @@ When time runs out you'll see your score, and whether you beat your record.
 
 ## On your watch
 
-The same two games, with the same rules and countries, fit on a Wear OS watch. Tap the right answer, or turn
-the crown to move the yellow outline through the answers and press a side button to pick it.
+The same two games, with the same rules and countries, fit on a Wear OS watch. Tap the right answer, or play
+with one hand: turn the crown to move the yellow outline through the answers and double-pinch (tap your
+index finger and thumb together twice) to pick it.
 
 | On the watch | What it does |
 | --- | --- |
 | Tap | Pick that answer. On the title screen, start that game. |
 | Turn the crown or bezel | Move through the answers. On the title screen, choose a game. |
-| Side button | Pick the outlined answer, start a game, or carry on after a pause. |
+| Double pinch | Pick the outlined answer, start a game, carry on after a pause, or play again. Pixel Watch 3 or later. |
+| Side button | The same as a double pinch, on watches that let apps use a side button. |
 | Swipe right | Pause. From the pause screen, go back to the menu. |
 
-Wear OS keeps the crown's own press for the system (it goes to the app list), so a press of the crown can't
-pick an answer; the side buttons that apps are allowed to use do. Letting the watch screen go dark pauses the
+Wear OS keeps the crown's own press for the system, and Pixel Watches keep their side button too, so on a
+Pixel Watch the double pinch is the one-handed way to pick. Letting the watch screen go dark pauses the
 game too.
 
 <p>

@@ -14,6 +14,7 @@
     <string name="press_back_for_menu">Press Back for the menu</string>
     <string name="play_again">Play again</string>
     <string name="menu">Menu</string>
+    <string name="pick_answer">Pick the outlined answer</string>
     <string name="score">SCORE</string>
     <string name="time">TIME</string>
     <plurals name="best_count">

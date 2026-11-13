@@ -14,6 +14,11 @@
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
 
+        <!-- Wear's own APIs, for the one-handed gesture. Watches without it play without the gesture. -->
+        <uses-library
+            android:name="wear-sdk"
+            android:required="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
